@@ -229,3 +229,27 @@ any time you run chef-clientk, ohai is run to provide most up-to-date values for
   ipaddress: 10.0.2.15
   hostname: localhost
 ```
+
+### Template
+
+Embedded Ruby (ERB)
+
+```
+[vagrant@localhost ~]$ chef generate template cookbooks/apache index.html
+Recipe: code_generator::template
+  * directory[cookbooks/apache/templates] action create
+    - create new directory cookbooks/apache/templates
+    - restore selinux security context
+  * template[cookbooks/apache/templates/index.html.erb] action create
+    - create new file cookbooks/apache/templates/index.html.erb
+    - update content in file cookbooks/apache/templates/index.html.erb from none to e3b0c4
+    (diff output suppressed by config)
+    - restore selinux security context
+
+[vagrant@localhost ~]$ tree cookbooks/apache/templates/
+cookbooks/apache/templates/
+└── index.html.erb
+
+0 directories, 1 file
+```
+
