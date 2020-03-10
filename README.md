@@ -210,3 +210,22 @@ Running handlers complete
 Chef Infra Client finished, 0/4 resources updated in 01 seconds
 ```
 
+learning chef resources is far more important than understanding ruby.
+
+## Ohai
+
+the node object is a representation of the system.
+
+```
+node['memory']['total']
+```
+
+any time you run chef-clientk, ohai is run to provide most up-to-date values for your recipes.
+
+```
+[vagrant@localhost ~]$ sudo chef-client -zr "recipe[apache]"
+[vagrant@localhost ~]$ curl localhost
+<h1>Hello, world!</h1>
+  ipaddress: 10.0.2.15
+  hostname: localhost
+```
