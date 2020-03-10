@@ -1,3 +1,7 @@
+# Learning Chef
+
+## 1. Getting started 
+
 ```
 vagrant box add bento/centos-7.2 --provider=virtualbox
 vagrant init bento/centos-7.2
@@ -56,11 +60,13 @@ Running handlers complete
 Chef Infra Client finished, 1/1 resources updated in 01 seconds
 ```
 
-## Test and repair
+## 2. From Recipes to Cookbooks
+
+### Test and repair
 
 chef-client takes action only when it needs to. chef looks at the current state of each resource and takes action only when that resource is out of policy.
 
-## Cookbook
+### Cookbook
 
 the fundamental unit of configuration and policy distribution
 
@@ -182,7 +188,7 @@ apply the default recipe:
 [vagrant@localhost apache]$ sudo chef-client -zr "recipe[apache]"
 ```
 
-## Including a recipe: include_recipe
+### Including a recipe: include_recipe
 
 ```
 [vagrant@localhost ~]$ vim cookbooks/apache/recipes/default.rb
@@ -232,7 +238,10 @@ any time you run chef-clientk, ohai is run to provide most up-to-date values for
 
 ### Template
 
-Embedded Ruby (ERB)
+### Embedded Ruby (ERB)
+
+* `<% xxxxx %>` executes the ruby code within the brackets and do not display the result.
+* `<% xxxxx %>` executes the ruby code within the brackets and display the result.
 
 ```
 [vagrant@localhost ~]$ chef generate template cookbooks/apache index.html
