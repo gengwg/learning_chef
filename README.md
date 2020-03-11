@@ -218,7 +218,7 @@ Chef Infra Client finished, 0/4 resources updated in 01 seconds
 
 learning chef resources is far more important than understanding ruby.
 
-## Ohai
+### Ohai
 
 the node object is a representation of the system.
 
@@ -238,10 +238,12 @@ any time you run chef-clientk, ohai is run to provide most up-to-date values for
 
 ### Template
 
-### Embedded Ruby (ERB)
+#### Embedded Ruby (ERB)
 
 * `<% xxxxx %>` executes the ruby code within the brackets and do not display the result.
 * `<% xxxxx %>` executes the ruby code within the brackets and display the result.
+
+#### Generate Tempalte 
 
 ```
 [vagrant@localhost ~]$ chef generate template cookbooks/apache index.html
@@ -260,5 +262,84 @@ cookbooks/apache/templates/
 └── index.html.erb
 
 0 directories, 1 file
+```
+
+## 3. Chef server
+
+### Steps to set up a node
+
+* provision the instance, e.g. aws
+* bootstrap the instance, 'knife bootstrap'
+* install chef
+* copy the cookbook 
+* apply the cookbook
+
+### Test deployments with Kitchen
+
+* kitchen create (driver)
+    * create virtual machine
+* kitchen converge (provisioner)
+    * install chef tools
+    * copy cookbooks
+    * run/apply cookbooks
+* kitchen verify (busser)
+    * verify assumptions
+* kitchen destroy
+    * destroy virtual machine
+
+
+```
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen list
+Instance             Driver   Provisioner  Verifier  Transport  Last Action    Last Error
+default-ubuntu-1804  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+default-centos-7     Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen create
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen list
+Instance             Driver   Provisioner  Verifier  Transport  Last Action  Last Error
+default-ubuntu-1804  Vagrant  ChefZero     Inspec    Ssh        Created      <None>
+default-centos-7     Vagrant  ChefZero     Inspec    Ssh        Created      <None>
+
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen converge
+>>>>>> ------Exception-------
+>>>>>> Class: Kitchen::ActionFailed
+>>>>>> Message: 2 actions failed.
+>>>>>>     Failed to complete #converge action: [Expected process to exit with [0], but received '172'
+---- Begin output of chef install /Users/gengwg/learningchef/cookbooks/apache/Policyfile.rb ----
+STDOUT: Chef Development Kit cannot execute without accepting the license
+
+===>
+
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ CHEF_LICENSE=accept kitchen converge
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen list
+Instance             Driver   Provisioner  Verifier  Transport  Last Action  Last Error
+default-ubuntu-1804  Vagrant  ChefZero     Inspec    Ssh        Created      Kitchen::ActionFailed
+default-centos-7     Vagrant  ChefZero     Inspec    Ssh        Converged    <None>
+
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen login default-centos-7
+Last login: Wed Mar 11 01:03:14 2020 from 10.0.2.2
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+[vagrant@default-centos-7 ~]$ curl localhost
+<h1>Hello, world!</h1>
+<h2>ipaddress: </h2>
+<h2>hostname: default-centos-7</h2>
+[vagrant@default-centos-7 ~]$ which httpd
+/usr/sbin/httpd
+
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen verify
+gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen destroy
+-----> Starting Test Kitchen (v2.3.4)
+-----> Destroying <default-ubuntu-1804>...
+       ==> default: Forcing shutdown of VM...
+       ==> default: Destroying VM and associated drives...
+       Vagrant instance <default-ubuntu-1804> destroyed.
+       Finished destroying <default-ubuntu-1804> (0m3.83s).
+-----> Destroying <default-centos-7>...
+       ==> default: Forcing shutdown of VM...
+       ==> default: Destroying VM and associated drives...
+       Vagrant instance <default-centos-7> destroyed.
+       Finished destroying <default-centos-7> (0m3.66s).
+-----> Test Kitchen is finished. (0m9.00s)
 ```
 
