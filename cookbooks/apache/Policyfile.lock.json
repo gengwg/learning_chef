@@ -1,0 +1,51 @@
+{
+  "revision_id": "645ad9bba8bad39ad3e19ddb7981945a9435de6e74433de5c35b9a57a070e221",
+  "name": "apache",
+  "run_list": [
+    "recipe[apache::default]"
+  ],
+  "included_policy_locks": [
+
+  ],
+  "cookbook_locks": {
+    "apache": {
+      "version": "0.1.0",
+      "identifier": "b6058ff5eeb60c98faf38624b197fa2b97351f6c",
+      "dotted_decimal_identifier": "51234561625863692.43060120294568343.275065127378796",
+      "source": ".",
+      "cache_key": null,
+      "scm_info": {
+        "scm": "git",
+        "remote": "git@github.com:gengwg/learningchef.git",
+        "revision": "2de4bda4983befa5bdb5ded828801abe7902e49b",
+        "working_tree_clean": false,
+        "published": true,
+        "synchronized_remote_branches": [
+          "origin/master"
+        ]
+      },
+      "source_options": {
+        "path": "."
+      }
+    }
+  },
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "solution_dependencies": {
+    "Policyfile": [
+      [
+        "apache",
+        ">= 0.0.0"
+      ]
+    ],
+    "dependencies": {
+      "apache (0.1.0)": [
+
+      ]
+    }
+  }
+}
