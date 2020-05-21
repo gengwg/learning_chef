@@ -343,3 +343,63 @@ gengwg@gengwg-mbp:~/learningchef/cookbooks/apache$ kitchen destroy
 -----> Test Kitchen is finished. (0m9.00s)
 ```
 
+## 4 Going full scale
+
+### Chef Supermarket
+
+https://supermarket.chef.io/
+
+Supermarket is front for github.
+
+### Wrapper cookbooks
+
+* do not use forked community cookbooks in production. 
+    * or you will miss out on upstream changes
+* instead, use **wrapper cookbooks** to wrap upstream cookbooks and change their behavior w/o forking
+* a wrapper cookbook encapsulats the functionality of the original cookbook
+* defines new default values for the recipes
+
+```
+gengwg@gengwg-mbp:~/learningchef$ chef generate cookbook cookbooks/myhaproxy
+Generating cookbook myhaproxy
+- Ensuring correct cookbook content
+
+Your cookbook is ready. Type `cd cookbooks/myhaproxy` to enter it.
+
+There are several commands you can run to get started locally developing and testing your cookbook.
+Type `delivery local --help` to see a full list of local testing commands.
+
+Why not start by writing an InSpec test? Tests for the default recipe are stored at:
+
+test/integration/default/default_test.rb
+
+If you'd prefer to dive right in, the default recipe can be found at:
+
+recipes/default.rb
+
+gengwg@gengwg-mbp:~/learningchef$ vim cookbooks/myhaproxy/metadata.rb
+depends 'haproxy', '= 1.6.7'
+```
+
+### Resolve dependencies with Berkshelf
+
+## Server Artifacts
+
+### Roles
+
+* describes a run list of recipes that are executed on teh node
+
+```
+roles/web.rb
+
+name 'web'
+description 'Web server'
+run_list 'recipe[apache]'
+```
+
+### Environments
+
+### Data bags
+
+https://learn.chef.io/#/
+
