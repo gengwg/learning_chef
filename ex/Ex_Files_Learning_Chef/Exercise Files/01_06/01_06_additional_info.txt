@@ -1,0 +1,46 @@
+1-6 Your First Chef Recipe
+
+# Commands List:
+# These commands are meant to be run from your LOCAL machine
+
+vagrant --version
+VBoxManage --version
+
+vagrant box add bento/centos-7.2 --provider=virtualbox
+
+vagrant init bento/centos-7.2
+
+vagrant up
+
+vagrant ssh
+
+# The next set of commands are run INSIDE of the vagrant instance
+# install the ChefDK
+
+curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chefdk -c stable -v 0.18.30
+
+chef --version
+
+# install your text editor of choice! vim, emacs, or nano
+
+sudo yum install vim -y
+sudo yum install emacs -y
+sudo yum install nano -y
+
+# open your first recipe
+
+nano hello.rb
+
+#
+# content of ~/hello.rb
+
+file '/hello.txt' do
+  content 'Hello, world!'
+end
+
+#
+#
+
+sudo chef-client --local-mode hello.rb
+
+cat /hello.txt

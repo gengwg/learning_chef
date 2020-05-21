@@ -1,0 +1,56 @@
+2-7 Ohai - I'm the Node Object
+
+Extra Resources:
+
+https://docs.chef.io/ohai.html
+https://docs.chef.io/nodes.html
+https://docs.chef.io/nodes.html#node-objects
+https://docs.chef.io/ruby.html#strings
+
+# This section is focused on the Ohai tool included with the chef-client.
+#
+# I demonstrate running ohai from within the Vagrant machine we've been using to
+# detect host-specific details, like ipaddress, hostname, memory, and cpu speed.
+# Ohai will return the values it has gathered to you in JSON.
+#
+# When the chef-client is executed, it also runs ohai, and make the values it gathers
+# available to you inside of your recipes. To do this, we query the 'node object'.
+#
+# This object's values can be queried with the syntax:
+# node['node_attribute']
+# node['parent_attribute']['child_attribute']
+#
+# I demonstrate accessing these values inside of the server.rb recipe from the apache cookbook.
+# To do this I expain String Interpolation, which allows us to reference variables inside of strings
+# with the syntax "{node['myattribute']}". We must surround attributes inside of strings with double-quotes,
+# and reference the variable with #{variable} .
+#
+# I insert the values for ipaddress and hostname into the index.html page by modifying server.rb:
+
+# contents of cookbooks/apache/recipes/server.rb
+#
+package 'httpd'
+
+file '/var/www/html/index.html' do
+  content "<h1>Hello, world!</h1>
+  ipaddress: #{node['ipaddress']}
+  hostname: #{node['hostname']}
+"
+end
+
+service 'httpd' do
+  action [:start, :enable]
+end
+#
+#
+
+# Notice the syntax on the node attributes, and how the "content" property is surrounded with double-quotes.
+#
+# I then run the chef-client to see if it can find my changes, and insert them into index.html.
+
+sudo chef-client -zr "recipe[apache]"
+
+curl localhost
+
+# If the results aren't returned properly, you will want to ensure that you've performed the sring
+# interpolation properly, and executed the server recipe with the chef-client.

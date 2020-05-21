@@ -1,0 +1,32 @@
+2-1 Chef Resources
+
+Extra Resources:
+
+https://docs.chef.io/resources.html
+https://docs.chef.io/resource_package.html
+https://docs.chef.io/resource_file.html
+https://docs.chef.io/resource_service.html
+
+# Standard Resource Definition:
+
+type 'name' do
+  properties
+  action
+end
+
+# example of a file resource
+
+file '/path/to/file' do
+  content 'file content'
+  action :create
+end
+
+# /hello.txt file resource example
+
+# because of the concept of a "default" action,
+# the code below is equivalent,
+# creating a file /hello.txt with the content 'Hello, world!'
+
+file '/hello.txt' do
+  content 'Hello, world!'
+end

@@ -1,0 +1,60 @@
+2-2 Test and Repair
+
+Extra Resources:
+
+https://docs.chef.io/resources.html
+https://docs.chef.io/resource_file.html
+
+# This exercise is just a demonstration of how the chef-client enforces the "desired state"
+# that you define inside of a recipe.
+
+# I demonstrate this by opening the file chef-client created, hello.txt
+# By manually changing this file's content, we can watch what happens when 
+# the chef-client is run again. For example, adding
+
+# content of /hello.txt
+#
+# Hello, world!
+# random content added
+
+# then re-running the chef-client with:
+
+sudo chef-client --local-mode hello.rb
+
+# removes the 'random content' line, repairing the desired state to:
+
+# content of /hello.txt
+#
+# Hello, world!
+
+# I end the video by talking about permissions, such as modifying the owner of /hello.txt 
+# to the vagrant user with:
+
+sudo chown vagrant /hello.txt
+
+# I then verify the change with:
+
+ls -l /hello.txt
+
+# And modify the hello.rb recipe with my new permissions:
+
+# content of ~/hello.rb
+#
+
+file '/hello.txt' do
+  content 'Hello, world!'
+  mode 0644
+  owner 'root'
+  group 'root'
+end
+
+#
+#
+
+# And re-running the chef-client:
+
+sudo chef-client --local-mode hello.rb
+
+# repairs the owner permissions, which you can check by re-running:
+
+ls -l /hello.txt

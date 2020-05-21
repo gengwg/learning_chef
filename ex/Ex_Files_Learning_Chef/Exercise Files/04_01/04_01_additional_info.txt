@@ -1,0 +1,22 @@
+4-1 Manage multiple nodes
+
+External Resources:
+
+https://docs.chef.io/manage.html
+https://docs.chef.io/server_manage_nodes.html
+https://docs.chef.io/server_manage_clients.html
+https://docs.chef.io/server_manage_cookbooks.html
+https://docs.chef.io/server_orgs.html
+https://docs.chef.io/server_users.html
+
+# This video demo is meant to provide an overview of the manage Chef WebUI
+# and using it to view node details.
+# I recommend checking out the above links to learn more about managing organizations,
+# users, groups, cookbooks, and clients.
+
+# I also demonstrate the parallels between the "node" attributes tab, and the node object
+# that we queried inside of the server.rb template index.html.erb.
+# These node attributes are stored and indexed by your Chef server!
+
+https://docs.chef.io/attributes.html
+https://docs.chef.io/server_manage_nodes.html#node-attributes

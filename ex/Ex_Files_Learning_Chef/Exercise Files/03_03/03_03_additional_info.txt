@@ -1,0 +1,65 @@
+3-3 Provision nodes with AWS
+
+# In this video, I show how I setup my managed nodes using Amazon Web Services (AWS).
+# For the exercises that follow, I recommend using a cloud provider
+# like AWS, Google Compute Engine, or Microsoft Azure.
+
+# This is so the code examples I demonstrate during the rest of class can be used.
+# I don't recommend trying to create a load-balancer using the method I demonstrate
+# with Vagrant and VirtualBox if this is your first time using Chef. 
+# Although this is entirely possible, it take more setup to ensure your networking requirements are met.
+
+# You can sign up for AWS's "free tier" here:
+
+https://aws.amazon.com/
+
+# I will warn you that the "free" tier option will still cost you some money if you
+# create three nodes for the load-balancer exercise I demonstrate in this class!
+# Please be aware of the instances you create, and that costs will be encurred
+# depending on how long these instances are running. To ensure you've properly 
+# shut down or stopped your instances after completing any exercises, check the docs here:
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html
+
+# To create a centos instance like mine in this class, you can check the docs here:
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
+https://aws.amazon.com/marketplace/pp/B00A6KUVBW
+https://wiki.centos.org/Cloud/AWS
+https://blog.tinned-software.net/create-amazon-aws-ec2-instance-with-centos/
+
+# Again, please understand that you are responsible for any costs you incur with AWS.
+# Launching and running instances does cost money!
+
+# When launching the instance, it will be useful to set a security group that allows
+# for ssh access on port 22, and tcp access on port 80 (from anywhere) so you can see the 
+# load-balancer properly functioning. Everything will still work if you don't open port 80, 
+# but you will be unable to view the index.html page in your browser.
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html
+
+# My security group looks like this:
+
+Type						Protocol		Port Range		Source
+
+Custom TCP Rule				TCP 			80 - 9000		0.0.0.0/0
+SSH 						TCP 			22 				0.0.0.0/0
+Custom ICMP Rule - IPv4 	Echo Request 	N/A 			0.0.0.0/0
+
+# Once the instance has been launched, you can login to it with the public ipaddress and 
+# identity file. No special software needs to be installed on the instance. 
+# In my videos, I've created a user on the centos instance called 'chef' with a password of 'chef'.
+# This is not necessary, however if you do not set a username with a password you will
+# need to login with the 'root' user and the identify file you downloaded from AWS when
+# the instance was provisioned. See the section called "Connect to Your Instance" below for more info:
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-connect-to-instance-linux
+
+# This also means you'll need to use this pem key to bootstrap the instance in the next
+# exercise, so keep track of where you store your pem keys! I recommend keeping AWS
+# credentials inside of your home directory, or inside of the ~/.aws directory if you've
+# installed the AWS Command-Line Interface (CLI).
+# When bootstrapping, add the -i option and reference your identity file.
+
+# Good luck!

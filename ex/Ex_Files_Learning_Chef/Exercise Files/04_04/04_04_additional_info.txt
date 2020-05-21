@@ -1,0 +1,54 @@
+4-4 Resolve dependencies with Berkshelf
+
+External Resources:
+
+https://docs.chef.io/berkshelf.html
+berkshelf.com/v2.0/
+https://docs.chef.io/supermarket.html#berkshelf
+
+# This section shows how to resolve cookbooks dependencies using Berkshelf.
+
+# After adding a dependency to the myhaproxy's metadata file and creating
+# the default.rb recipe, we're ready to upload our cookbook and it's dependencies
+# to your Chef server.
+
+# To install dependencies, you'll need to be navigated into the myhaproxy cookbook
+# on the same level as the Berksfile.
+
+cd ~/chef-repo/cookbooks/myhaproxy
+
+# If you inspect the Berksfile, you'll notice that it contains a 'source' to grab
+# dependencies from. This can either be the publicly available supermarket.chef.io
+# or a private installation behind your firewall.
+# The Berksfile also references your metadata file, where the dependencies are listed.
+
+# content of ~/chef-repo/cookbooks/myhaproxy/Berksfile
+#
+
+source 'https://supermarket.chef.io'
+
+metadata
+
+#
+#
+
+# To install the dependencies, from within the cookbook run:
+
+berks install
+
+# If it cannot find your Berksfile, make sure you're navigated into the cookbook.
+# This will create a Berksfile.lock, which lists all the dependencies that were downloaded.
+# You can check the dependencies manually by looking inside of the hidden folder in your home
+# directory ~/.berkshelf/cookbooks but don't modify them!
+
+# To upload myhaproxy and all its dependencies, run:
+
+berks upload
+
+# If you receive any errors running 'berks upload', such as "There was an error connecting to the Chef server",
+# check to make sure you don't have any syntax errors, and that your code matches what I have inside
+# of the default.rb recipe for the myhaproxy cookbook. 'berks upload' also checks syntax.
+
+# Check your work by making sure the cookbook was uploaded with:
+
+knife cookbook list

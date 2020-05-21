@@ -1,0 +1,55 @@
+3-4 Bootstrap a node
+
+External Resources:
+
+https://docs.chef.io/knife_bootstrap.html
+https://docs.chef.io/install_bootstrap.html
+http://docs.aws.amazon.com/quickstart/latest/chef-server/bootstrapping.html
+
+# In this section I bootstrap the centos instance I provisioned with AWS
+# as a webserver running the apache cookbook. Fun!
+
+# For this, you'll need a couple of things:
+
+1) The public ipaddress or FQDN of the webserver node (which I call web1)
+2) The identity file you downloaded when creating the instance, or credentials
+	for an administrator (I use the 'chef' user in my demo, with a password of 'chef')
+
+# Bootstrapping the node authenticates to the Chef server, installs the chef-client,
+# and performs the first chef-client run with the provided run-list.
+
+# When using user credentials to bootstrap, the command is as follows:
+
+knife bootstrap FQDN -x USERNAME -P PASSWORD --sudo -N NODE_NAME -r RUN_LIST
+
+# When using an identity file, the format is:
+
+knife bootstrap FQDN -x USERNAME -i /PATH/TO/IDENTITY_FILE --sudo -N NODE_NAME -r RUN_LIST
+
+# I bootstrapped with:
+# knife bootstrap FQDN -x chef -P chef --sudo -N web1 -r "recipe[apache]"
+
+# Please always bootstrap instances from the chef-repo directory.
+
+# If using amazon ec2 instances, the default username is usually "ec2-user".
+# Also, notice it's a capital "P" for the password, lowercase p is for the port option.
+# I named my node web1.
+# I also give it a runlist that executes the default.rb recipe from the apache cookbook.
+
+# You can check your work by running
+
+knife node list
+
+# to see the name of your node. You can check the node details with
+
+knife node show web1
+
+# or by logging into the WebUI at manage.chef.io and checking the "nodes" tab.
+# Well done!
+
+# After bootstrapping web1, I also bootstrap another webserver, web2. If you're following
+# along with the load-balancer exercise, you'll also want to bootstrap web2.
+
+# If you've set your security group policy properly to allow TCP traffic on port 80 
+# (see the last video readme) you can see the hello world page of your web1 or web2 nodes 
+# by pasting their public ip into the browser.

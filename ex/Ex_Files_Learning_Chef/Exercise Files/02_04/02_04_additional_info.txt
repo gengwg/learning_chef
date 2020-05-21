@@ -1,0 +1,50 @@
+2-4 The Apache cookbook
+
+In this video, I demonstrate setting up a basic Apache webserver. The instructions are:
+
+1) use 'chef generate' to create the apache cookbook
+2) write a recipe called "server.rb" with the policy:
+	- the package 'httpd' is installed
+	- the file '/var/www/html/index.html' is created with the content:
+		'<h1>Hello, world!</h1>'
+	- the service 'httpd' is started and enabled
+3) run the chef-client to apply the recipe
+4) run 'curl localhost' to verify your working webserver
+
+# Commands List
+# These commands are meant to be run from inside the VAGRANT instance, after running 'vagrant ssh'
+# make sure you're in the home directory (cd ~) when running these commands
+
+# you should have already created the apache cookbook in the previous video. If not, run:
+# mkdir cookbooks
+# chef generate cookbook cookbooks/apache
+
+# create a new recipe called 'server.rb'
+
+chef generate recipe cookbooks/apache server
+
+# next we modify the content of the new server recipe:
+
+nano cookbooks/apache/recipes/server.rb
+
+# fill the file cookbooks/apache/recipes/server.rb with the content:
+#
+package 'httpd'
+
+file '/var/www/html/index.html' do
+  content '<h1>Hello, world!</h1>'
+end
+
+service 'httpd' do
+  action [:start, :enable]
+end
+#
+#
+
+# save the file, and run the chef-client:
+
+sudo chef-client --local-mode cookbooks/apache/recipes/server.rb
+
+# and verify the webserver is running with:
+
+curl localhost

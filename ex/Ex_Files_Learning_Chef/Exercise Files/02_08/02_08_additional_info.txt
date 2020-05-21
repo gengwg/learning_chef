@@ -1,0 +1,53 @@
+2-8 Templates and embedded Ruby
+
+Extra Resources:
+
+https://docs.chef.io/templates.html
+
+# This section covers using a template resource to create the index.html page.
+# The template resource can be used for inserting Ruby logic or variables into
+# any file, using Embedded Ruby (ERB).
+
+# To add a template for the index.html pagin to the apache cookbook's server recipe, 
+# from the home directory of my vagrant instance I run:
+
+chef generate template cookbooks/apache index.html
+
+# This should add a templates directory to the apache cookbook that contains
+# the template file index.html.erb
+# I modify the template with the content of the index.html page
+
+# content of ~/cookbooks/apache/templates/index.html.erb
+#
+
+<h1>Hello, world!</h1>
+<h2>ipaddress: <%= node['ipaddress'] %></h2>
+<h2>hostname:  <%= node['hostname'] %></h2>
+
+#
+#
+
+# Notice that I use ERB tags to render the ipaddress and hostname node attributes.
+#
+# To use the template, I also modify the server recipe to use a template resource
+# instead of a file resource. I use the 'source' property to call the template file.
+
+# content of ~/cookbooks/apache/recipes/server.rb
+#
+
+package 'httpd'
+
+template '/var/www/html/index.html' do
+  source 'index.html.erb'
+end
+
+service 'httpd' do
+  action [:start, :enable]
+end
+
+#
+#
+
+# I can then apply the template by running the chef-client
+
+sudo chef-client -zr "recipe[apache]"

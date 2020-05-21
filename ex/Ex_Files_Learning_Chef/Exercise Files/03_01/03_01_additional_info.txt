@@ -1,0 +1,9 @@
+3-1 The benefits of using a Chef server
+
+External Resources:
+
+https://docs.chef.io/server_components.html
+https://docs.chef.io/install_server.html
+https://docs.chef.io/manage.html
+
+# This video is an introduction to the Chef server

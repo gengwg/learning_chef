@@ -1,0 +1,35 @@
+1-5 Vagrant and VirtualBox
+
+Install Vagrant from:
+
+https://www.vagrantup.com/downloads.html
+
+Install VirtualBox from:
+
+https://www.virtualbox.org/wiki/Downloads
+
+Verify your SSH client
+
+On *nix systems, the terminal should have SSH available
+
+On Windows, consider PuTTY:
+
+http://www.putty.org/
+
+Or use GitBash, available by launching the ChefDK from your Desktop Icon
+
+On Windows, the Chocolately Package Manager can also simplify the installation process for these tools:
+
+https://chocolatey.org/
+
+
+Useful Vagrant Commands:
+
+https://www.vagrantup.com/docs/cli/
+
+vagrant box add
+vagrant init
+vagrant ssh-config
+vagrant status
+vagrant suspend
+vagrant destroy --force

@@ -1,0 +1,36 @@
+4-2 Chef Supermarket
+
+External Resources:
+
+https://docs.chef.io/supermarket.html
+
+# In this section I demonstrate the theory behind setting up a load-balancer using
+# a community cookbook, haproxy:
+
+https://supermarket.chef.io/cookbooks/haproxy
+
+# I go through the readme for the cookbook, and talk about how we're going to utilize
+# the node attribute node['haproxy']['members'] to create the load-balancer.
+
+node['haproxy']['members'] - used to specify the member systems to add. Default:
+
+  [{
+    "hostname" => "localhost",
+    "ipaddress" => "127.0.0.1",
+    "port" => 4000,
+    "ssl_port" => 4000
+  }, {
+    "hostname" => "localhost",
+    "ipaddress" => "127.0.0.1",
+    "port" => 4001,
+    "ssl_port" => 4001
+  }]
+
+
+# In the next section I show how to create a "wrapper" cookbook for haproxy.
+# Don't download the haproxy sourcecode directly, we'll use berkshelf to do that!
+
+# If you'd like information about hosting your own private supermarket, you can look here:
+
+https://docs.chef.io/install_supermarket.html
+https://github.com/chef/supermarket

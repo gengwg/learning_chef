@@ -1,0 +1,54 @@
+4-6 Server artifacts - roles, environments, data bags
+
+# Disclamer: I do not demonstrate all of the code needed to setup the demo for this section.
+# This example ties a lot of pieces together! It would be great for you to give this a shot,
+# and you could consider it a further exercise for self-study on using other advanced Chef server
+# components like roles, environments, and data bags.
+
+# I have attached my complete chef-repo for your benefit, but you'll still need to learn about
+# the process of creating and uploading roles, environments, and data bags.
+
+# To get you started I recommend checking out the included documentation to learn about
+# how to create and manage these artifacts. You can then use my code to create users on your nodes,
+# and force your index.html page to display the node's environment as shown.
+
+# I wish you the best of luck in your future endeavors with Chef, and thanks for joining me for
+# the Learning Chef course!
+
+---------------------
+
+# Roles are a way to manage the run-list for a particular type of node, such as webservers,
+# load-balancers, or databases.
+# They describe the run-list for a set of nodes that are assigned that role.
+
+https://docs.chef.io/roles.html
+
+# In this class I create roles, environments, and data bags locally on my workstation before uploading
+# them to the Chef server. You can also create these artifacts directly on the Chef server using
+# knife or the WebUI.
+
+https://docs.chef.io/knife_role.html
+https://docs.chef.io/server_manage_roles.html
+
+# Managing environments is very similar to managing roles. Environments restrict the versions of cookbooks
+# that a node should run. When combined with a role control can become very simple.
+# I again create environments locally and upload them with knife.
+
+https://docs.chef.io/environments.html
+https://docs.chef.io/knife_environment.html
+https://docs.chef.io/server_manage_environments.html
+
+# Data bags are custom sets of JSON data that are stored on the Chef server and accessible to your
+# nodes when they converge. For data bags your must create the bag on the Chef server before contents
+# can be uploaded to it. You can again create them locally and upload them like I typically do.
+
+https://docs.chef.io/data_bags.html
+https://docs.chef.io/knife_data_bag.html
+https://docs.chef.io/server_manage_data_bags.html
+
+# I wrote my own cookbook to manage users for this demo. For a more production-like scenario, check
+# out the users cookbook on the Chef Supermarket:
+
+https://supermarket.chef.io/cookbooks/users
+https://github.com/chef-cookbooks/users
+

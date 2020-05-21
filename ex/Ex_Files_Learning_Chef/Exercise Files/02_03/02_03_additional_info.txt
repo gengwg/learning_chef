@@ -1,0 +1,44 @@
+2-3 Organizing recipes with cookbooks
+
+External Resources:
+
+http://docs.chef.io/cookbooks.html
+
+# Commands List:
+# These commands are meant to be run from inside the VAGRANT instance, after running 'vagrant ssh'
+
+chef --help
+chef generate --help
+
+mkdir cookbooks
+chef generate cookbook cookbooks/apache
+
+# next I install the 'tree' package, which is NOT related to Chef.
+# The 'tree' command is meant to help examine the directory structure of your cookbook.
+
+sudo yum install tree -y
+tree
+
+# I then describe what each file in the cookbook tree looks like:
+
+cookbooks
+└── apache
+    ├── Berksfile
+    ├── README.md
+    ├── chefignore
+    ├── metadata.rb
+    ├── recipes
+    │   └── default.rb
+    ├── spec
+    │   ├── spec_helper.rb
+    │   └── unit
+    │       └── recipes
+    │           └── default_spec.rb
+    └── test
+        └── recipes
+            └── default_test.rb
+
+# you can check what's inside each file with the 'cat' commands, like so:
+
+cat cookbooks/apache/README.md
+cat cookbooks/apache/recipes/default.rb

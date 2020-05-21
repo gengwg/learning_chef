@@ -1,0 +1,35 @@
+4-5 Deploy the haproxy cookbook
+
+# Here we deploy all our hard work from the myhaproxy wrapper cookbook!
+
+# You'll need to make sure you've provisioned a third centos instance for boostrapping
+# a new node to run the cookbook. This instance should have the same configuration as
+# your two webservers. Revisit section "3-3 Provision nodes with AWS" if you need a refresher.
+
+# To bootstrap this new node, you'll follow the same procedure as with web1 and web2, however
+# we will give the node a name of load-balancer and a run-list that contains myhaproxy.
+
+# When using user credentials to bootstrap, the command is as follows:
+
+knife bootstrap FQDN -x USERNAME -P PASSWORD --sudo -N NODE_NAME -r RUN_LIST
+
+# When using an identity file, the format is:
+
+knife bootstrap FQDN -x USERNAME -i /PATH/TO/IDENTITY_FILE --sudo -N NODE_NAME -r RUN_LIST
+
+# I bootstrapped the load-balancer node with:
+# knife bootstrap FQDN -x chef -P chef --sudo -N load-balancer -r "recipe[myhaproxy]"
+
+# Please make sure your run-list contains your wrapper cookbook myhaproxy, not just haproxy!
+
+# If there are any issues running the bootstrap, ensure that your default.rb recipe is written 
+# properly according to the instructions from section "3-3 Wrapper cookbooks"
+
+# To test, you can login to the load-balancer and run 'curl localhost' multiple times, which
+# should return the different hello, world pages from your two webservers.
+
+# If you've set up tcp access on port 80 for your load-balancer, you can also paste the
+# load-balancer's public ipaddress into the browser. Refreshing the page multiple times
+# should show the load balancing occurring. 
+
+# This is a hard exercise! Well done on making it this far.

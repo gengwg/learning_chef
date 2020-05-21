@@ -1,0 +1,83 @@
+3-2 Get started with Hosted Chef
+
+External Resources
+
+https://manage.chef.io/
+https://manage.chef.io/signup
+
+# In this video I create an account on Hosted Chef (at manage.chef.io)
+# You'll need to sign-up with your name, company, email, and username.
+# After signing up, you'll verify your email address.
+
+# After verifying your account and signing in, you'll be prompted to
+# create a new organization, whose name will need to be unique on
+# the server. Once you've created the unique organization,
+# download the "Starter Kit" to your local machine.
+
+# The starter kit will contain a directory called chef-repo, which
+# you should unzip and move to an easily-accessible directory.
+# I move the chef-repo to my home directory, ie
+# /Users/username/chef-repo or c:\Users\username\chef-repo
+
+# After moving the chef-repo, navigate into it inside a terminal
+# or powershell session. If using Windows, I recommend launching
+# powershell through the 'ChefDK' Desktop icon, which ensures
+# that the Chef development tools have been loaded into your path.
+
+# Once you've moved into the chef-repo, check your connectivity to the
+# Hosted Chef organization you created with:
+
+knife client list
+
+# which should return ORGANIZATION_NAME-validator. If so, you're connected!
+# If not, check to make sure you've navigated into the chef-repo directory.
+
+# Now, let's upload some cookbooks!
+
+# I recommend downloading the 'cookbooks' directory from the 3-1 'code' 
+# to attached to this video, or you can copy them out of your vagrant machine.
+
+# Download the 'apache' cookbook, and move it into the 'cookbooks' directory
+# of the chef-repo, ie ~/chef-repo/cookbooks/apache or c:\Users\username\chef-repo\cookbooks\apache
+
+# Ignoring the 'starter' cookbook (which you could delete), 
+# you should now have a directory structure like this:
+
+└── chef-repo
+    ├── README.md
+    ├── cookbooks
+    │   └── apache
+    │       ├── Berksfile
+    │       ├── README.md
+    │       ├── chefignore
+    │       ├── metadata.rb
+    │       ├── recipes
+    │       │   ├── default.rb
+    │       │   └── server.rb
+    │       ├── spec
+    │       │   ├── spec_helper.rb
+    │       │   └── unit
+    │       │       └── recipes
+    │       │           ├── default_spec.rb
+    │       │           └── server_spec.rb
+    │       ├── templates
+    │       │   ├── default
+    │       │   └── index.html.erb
+    │       └── test
+    │           └── recipes
+    │               ├── default_test.rb
+    │               └── server.rb
+    └── roles
+        └── starter.rb
+
+
+# From the chef-repo directory, you can now upload the apache cookbook to the Chef server:
+
+knife cookbook upload apache
+
+# Please make sure you're in the proper directory ~/chef-repo/ in order to upload the cookbook.
+# You can check your work with:
+
+knife cookbook list
+
+# Well done! You're not setup with a Chef server.

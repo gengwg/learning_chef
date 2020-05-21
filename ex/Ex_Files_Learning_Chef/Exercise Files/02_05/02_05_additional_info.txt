@@ -1,0 +1,69 @@
+2-5 Apply cookbooks and include_recipe
+
+Extra Resources:
+
+https://docs.chef.io/ctl_chef_client.html#run-in-local-mode
+https://docs.chef.io/run_lists.html
+https://docs.chef.io/recipes.html#include-recipes
+
+# In this video, I demonstrate how to apply recipes with the chef-client command.
+# In principle, you should understand that we are only providing the run-list manually
+# since we don't have a Chef server yet. Once we work with a Chef server, the run-list
+# will be stored by on the server, so we will only run 'sudo chef-client'.
+
+# Up until this point, we have applied recipes by running:
+
+sudo chef-client --local-mode /path/to/recipe.rb
+
+# Now that we're working with cookbooks, we will want to execute the chef-client a little differently.
+# This is because very soon our cookbooks will have other supporting components, such as templates,
+# that your recipes might need to function.
+
+# The generate format for a run-list is:
+
+# "recipe[cookbook::recipe]"
+
+# The run-list is an ordered collection of recipes to execute. This means we can run a list of recipes
+# in order with the following syntax:
+
+# "recipe[cookbook1::recipe],recipe[cookbook2::recipe],recipe[cookbook3]"
+
+# We can execute a particular recipe, like server.rb, with this syntax:
+
+sudo chef-client --local-mode --runlist "recipe[apache::server]"
+
+# This will execute the server.rb recipe, but allow it to use any components included inside of the
+# apache cookbook. You can use the short-opions for the command to make this a little less typing:
+
+sudo chef-client -z -r "recipe[apache::server]"
+sudo chef-client -zr "recipe[apache::server]"
+
+# We should understand that when we supply a run-list, ommiting the recipe that should be executed
+# will run the default.rb recipe.
+
+# This code will execute the default.rb recipe:
+
+sudo chef-client -zr "recipe[apache::default]"
+
+# But this can be appreviated by ommitting the ::default
+
+sudo chef-client -zr "recipe[apache]"
+
+# This is very useful, because recipes can call other recipes! We can have the default recipe call server.rb
+# by adding the include_recipe method to default.rb:
+
+#
+# content of cookbooks/apache/recipes/default.rb
+
+# Cookbook Name:: apache
+# Recipe:: default
+
+# Copyright (c) 2017 The Authors, All Rights Reserved.
+
+include_recipe 'apache::server'
+#
+#
+
+# After modifying default.rb, executing the chef-client like so will apply server.rb:
+
+sudo chef-client -zr "recipe[apache]"

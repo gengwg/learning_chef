@@ -1,0 +1,75 @@
+4-3 Wrapper Cookbooks
+
+External Resources:
+
+https://blog.chef.io/2013/12/03/doing-wrapper-cookbooks-right/
+https://blog.chef.io/2017/02/14/writing-wrapper-cookbooks/
+
+# This section teaches how to build a wrapper cookbook for the haproxy community cookbook.
+# We do this to avoid forking an upstream cookbook, in case you want to use updated
+# dependencies in the future.
+
+# First we need to generate a new cookbook. From the ~/chef-repo/ directory, run:
+
+chef generate cookbook cookbooks/myhaproxy
+
+# After the new cookbook has been scaffoled, we need to add a dependency to
+# the metadata.rb file:
+
+# content of ~/chef-repo/cookbooks/myhaproxy/metadata.rb
+#
+
+name 'myhaproxy'
+maintainer 'The Authors'
+maintainer_email 'you@example.com'
+license 'all_rights'
+description 'Installs/Configures myhaproxy'
+long_description 'Installs/Configures myhaproxy'
+version '0.1.0'
+
+depends 'haproxy', '= 1.6.7'
+
+#
+#
+
+# Notice how I've pinned the version of haproxy, citing that I want the 1.6.7 version of haproxy.
+# Please use this version to ensure that everything functions as expected.
+
+# Next, we modify the default.rb recipe of the myhaproxy wrapper cookbook with the
+# public hostnames and ipaddresses of my webservers. You can gather these by running:
+
+knife node show web1 -a cloud
+knife node show web2 -a cloud
+
+# This should display the public values you need for your cloud instances.
+# I then add these details to the default.rb recipe:
+
+# content of ~/chef-repo/cookbooks/myhaproxy/recipes/default.rb
+#
+# Cookbook Name:: myhaproxy
+# Recipe:: default
+#
+# Copyright (c) 2017 The Authors, All Rights Reserved.
+
+node.default['haproxy']['members'] = [
+{
+    'hostname' => 'web1_PUBLIC_HOSTNAME',
+    'ipaddress' => 'web1_PUBLIC_IPADDRESS',
+    'port' => 80,
+    'ssl_port' => 80
+  }, {
+    'hostname' => 'web2_PUBLIC_HOSTNAME',
+    'ipaddress' => 'web2_PUBLIC_IPADDRESS',
+    'port' => 80,
+    'ssl_port' => 80
+}]
+
+include_recipe 'haproxy::default'
+
+#
+#
+
+# With the above configuration defined, you're ready to upload this cookbook
+# and its dependencies to the Chef server!
+
+# We do this with the "berks" command in the next video.

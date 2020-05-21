@@ -1,0 +1,112 @@
+3-5 Test deployments with kitchen
+
+External Resources:
+
+https://docs.chef.io/kitchen.html
+https://docs.chef.io/config_yml_kitchen.html
+https://docs.chef.io/ctl_kitchen.html
+http://kitchen.ci/
+https://docs.chef.io/inspec.html
+http://inspec.io/docs/
+
+# Please note that this video is meant to demo the kitchen framework.
+# I do not explicitly demonstrate setting up test kitchen, however if
+# you follow along with my demonstrated code you may be able to follow along.
+# However this section does require you to setup Vagrant and VirtualBox properly
+# on your local machine.
+
+# Also note you can download my cookbook code attached to this video to see how
+# I've configured the chef-repo/cookbooks/apache/.kitchen.yml file.
+
+# From within the apache cookbook, you'll want to modify the .kitchen.yml file
+# as I demonstrate in this video.
+
+# contents of ~/chef-repo/cookbooks/apache/.kitchen.yml
+#
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7.2
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apache::default]
+    verifier:
+      inspec_tests:
+        - test/recipes
+    attributes:
+
+#
+#
+
+# Then, navigate into the cookbook inside terminal or powershell, ie
+
+cd cookbooks/apache
+kitchen list
+
+# running 'kitchen list' should return the name of your virtual machine.
+# If the list displays properly, you should be able to run:
+
+kitchen create
+kitchen converge
+
+# These commands may take some time depending on your hardware!
+# If the 'kitchen converge' process does not complete properly, make sure
+# you don't have any syntax errors in your server.rb recipe by comparing
+# with the code attached to this video.
+
+# You can login to the kitchen instance with 'kitchen login'. If you are unable
+# to login to the instance, you can still proceed with the exercises, but you may want
+# to consider installing the kitchen-vagrant Ruby gem by running:
+
+chef gem install kitchen-vagrant
+
+# https://github.com/test-kitchen/kitchen-vagrant
+# https://rubygems.org/gems/kitchen-vagrant/
+
+# The virtual webserver should now be in the desired state.
+# You can execute any tests inside of the cookbooks/apache/test/recipes/default.rb
+# file with the 'kitchen verify' command:
+
+kitchen verify
+
+# At least one test will fail if you run 'kitchen verify' out-of-the-box, without
+# modifying the default test.
+# I modified the default test like below:
+
+# content of ~/chef-repo/cookbooks/apache/recipes/default.rb
+#
+
+describe port(80) do
+  it { should be_listening }
+end
+
+describe command('curl localhost') do
+  its(:stdout) { should match(/Hello, world!/) }
+end
+
+#
+#
+
+# Re-executing
+
+kitchen verify
+
+# Should then produce passing tests if you've setup the webserver properly.
+
+# Don't forget to clean up your work by running 'kitchen destroy'!
+
+kitchen destroy
+
+# You can also look into the 'kitchen test' command to further automate testing.
+
+https://docs.chef.io/ctl_kitchen.html#kitchen-test

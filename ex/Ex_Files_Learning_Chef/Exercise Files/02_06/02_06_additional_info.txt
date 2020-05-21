@@ -1,0 +1,17 @@
+2-6 Ruby and Resources
+
+Extra Resources:
+
+https://docs.chef.io/ruby.html
+
+# This video is some simple information about learning Ruby and Chef. I mention that the best way
+# to learn Chef is to practice with Chef resources, not by jumping into pure Ruby code.
+# After you've mastered the basics of Chef it could be great to try some other Ruby tutorials to
+# learn about some of the more complex things you can do inside of recipes.
+
+External Resources for learning Ruby:
+
+http://tryruby.org/
+http://rubylearning.com/
+https://rubymonk.com/
+https://www.ruby-lang.org/en/documentation/quickstart/
